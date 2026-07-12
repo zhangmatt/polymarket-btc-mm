@@ -1,0 +1,7 @@
+numpy>=1.26
+requests>=2.31
+websocket-client>=1.8
+py-clob-client>=0.23
+web3>=7.0
+pytest>=8.0
+
