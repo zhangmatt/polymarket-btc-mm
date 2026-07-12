@@ -6,5 +6,5 @@ __all__ = [
     "execution",
     "risk",
     "backtest",
+    "strategy",
 ]
-
