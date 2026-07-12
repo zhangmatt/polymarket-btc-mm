@@ -16,6 +16,7 @@ Data flow is split into small modules:
 - `execution.py`: cancel/replace planner and execution-client protocol.
 - `positions.py`: Data API trade polling, local fill de-dupe, inventory state, onchain balance reads.
 - `merge.py`: conditional-token complete-set merge adapter through the builder relayer.
+- `attribution.py`: taker markouts and maker fill decomposition.
 - `strategy.py`: one decision step wiring fair value, risk, quoting, and execution planning.
 - `backtest.py`: fair-log loader, calibration metrics, and maker-fill simulation.
 - `live_runner.py`: operational loop that connects the adapters and runs the strategy.
@@ -60,14 +61,14 @@ Live order placement requires `POLY_PRIVATE_KEY`, `POLY_FUNDER`, and the optiona
 shown in `.env.example`.
 
 ## Validation
-Recorded development artifacts:
-- 20 fair-log files across 22 Step 1 collection runs.
-- Volatility-model grid: 301 parameter rows over 11 resolved windows.
-- Fixed-bid simulation: 85,475 quote samples; Down side filled 484 times (`0.566%`) with
-  500ms markout of `-5.66c`; Up side had zero fills.
-- Single-run calibration check: base GBM brier `0.056722`, market mid brier `0.056908`,
-  alternate vol attempt brier `0.069436`.
-- Rust pricing-path benchmark: Python `21.64us` per quote decision, Rust `2.80us`.
+See `metrics.md` for the audited numbers. The short version:
+- 39,978 fair-value sample rows across 13 BTC 15m windows; 11 resolved windows in the grid.
+- Taker logs: 2,424 execution rows, 155 round trips, `-5106.064627` USDC realized PnL.
+- Taker markouts were negative from 300ms through 10s; 10s mean markout was `-0.245744` USDC.
+- Maker simulations showed that fills concentrated when the book had already moved through the quote.
+- Pricing-path benchmark: Python `21.64us`, Rust `2.80us`, or `7.7x` faster.
 
-Main findings: fair value closely tracked the market mid when implied-vol weight was high; queue
-position, stale-quote exposure, and selective fills dominated spread capture in simulation.
+The strategy was not reliably profitable in the analyzed artifacts. The main issues were fees,
+adverse selection, queue position, and stale quotes during fast BTC moves. The maker-only design was
+the engineering response: avoid taker crossing, keep post-only orders, cap inventory, and use
+complete-set merges to recycle capital.

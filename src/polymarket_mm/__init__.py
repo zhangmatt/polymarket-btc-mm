@@ -1,6 +1,7 @@
 """Polymarket BTC 15-minute binary market-making components."""
 
 __all__ = [
+    "attribution",
     "clob",
     "config",
     "fair_value",
