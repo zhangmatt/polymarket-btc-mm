@@ -18,6 +18,10 @@ dependencies = [
 live = ["py-clob-client>=0.23", "web3>=7.0"]
 dev = ["pytest>=8.0"]
 
+[project.scripts]
+polymarket-mm-backtest = "polymarket_mm.backtest_cli:main"
+polymarket-mm-live = "polymarket_mm.live_runner:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
