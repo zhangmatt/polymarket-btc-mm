@@ -60,14 +60,6 @@ DRY_RUN=1 polymarket-mm-live --market next
 Live order placement requires `POLY_PRIVATE_KEY`, `POLY_FUNDER`, and the optional relayer variables
 shown in `.env.example`.
 
-## Validation
-See `metrics.md` for the audited numbers. The short version:
-- 39,978 fair-value sample rows across 13 BTC 15m windows; 11 resolved windows in the grid.
-- Taker logs: 2,424 execution rows, 155 round trips, `-5106.064627` USDC realized PnL.
-- Taker markouts were negative from 300ms through 10s; 10s mean markout was `-0.245744` USDC.
-- Maker simulations showed that fills concentrated when the book had already moved through the quote.
-- Pricing-path benchmark: Python `21.64us`, Rust `2.80us`, or `7.7x` faster.
-
 The strategy was not reliably profitable in the analyzed artifacts. The main issues were fees,
 adverse selection, queue position, and stale quotes during fast BTC moves. The maker-only design was
 the engineering response: avoid taker crossing, keep post-only orders, cap inventory, and use
