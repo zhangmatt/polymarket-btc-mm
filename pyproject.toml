@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "polymarket-mm"
 version = "0.1.0"
-description = "Reference implementation of a Polymarket BTC 15-minute binary market maker."
+description = "Polymarket BTC 15-minute binary market-making engine."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -23,4 +23,3 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-
