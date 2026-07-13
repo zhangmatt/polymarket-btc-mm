@@ -1,5 +1,7 @@
 # Polymarket BTC 15m market maker
 
+Note: this is the public version of my bot, ready to be shared with no private keys or messy workspace. 
+
 Maker-only trading engine for Polymarket BTC 15-minute Up/Down binary markets.
 
 The system combines a GBM fair-value model with live market-data adapters, post-only CLOB
